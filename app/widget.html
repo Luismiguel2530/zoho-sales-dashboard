@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+
+    <title>Sales Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <script src="https://live.zwidgets.com/js-sdk/1.2/ZohoEmbededAppSDK.min.js"></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>This is a Dashboard</h1>
+
+      <p>One page with all of the forms and resources for sales reps.</p>
+      <p id="crm-status">Connecting to CRM...</p>
+
+      <input
+        type="text"
+        class="search-bar"
+        placeholder="Search forms, resources, leads..."
+      />
+
+      <div class="section">
+        <h2>Quick Access</h2>
+
+        <div class="cards">
+          <button id="newLeadBtn">New Lead</button>
+          <button id="newDealBtn">New Deal</button>
+          <button id="newAccountBtn">New Account</button>
+          <button id="creatorFormBtn">Creator Form</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Sales Forms</h2>
+
+        <div class="cards">
+          <div class="card">Lead Intake Form</div>
+          <div class="card">Customer Visit Form</div>
+          <div class="card">Opportunity Request Form</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Resources</h2>
+
+        <div class="cards">
+          <div class="card">Sales Playbook</div>
+          <div class="card">Product Catalog</div>
+          <div class="card">Pricing Guide</div>
+        </div>
+      </div>
+    </div>
+    <script src="js/app.js"></script>
+  </body>
+</html>
