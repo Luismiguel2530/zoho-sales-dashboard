@@ -21,7 +21,6 @@
 
 //   alert(`Searching for: ${searchText}`);
 // });
-
 const status = document.getElementById("crm-status");
 
 window.onload = () => {
@@ -30,15 +29,22 @@ window.onload = () => {
     return;
   }
 
-  ZOHO.embeddedApp.on("PageLoad", () => {
-    status.textContent = "Connected to Zoho CRM ✅";
-  });
-
-  ZOHO.embeddedApp.init();
+  ZOHO.embeddedApp
+    .init()
+    .then(() => {
+      status.textContent = "Connected to Zoho CRM ✅";
+    })
+    .catch(() => {
+      status.textContent = "CRM Connection Failed ❌";
+    });
 };
 
-document.getElementById("searchBtn").addEventListener("click", () => {
-  const searchText = document.getElementById("searchInput").value;
+const searchBtn = document.getElementById("searchBtn");
 
-  alert(`Searching for: ${searchText}`);
-});
+if (searchBtn) {
+  searchBtn.addEventListener("click", () => {
+    const searchText = document.getElementById("searchInput").value;
+
+    alert(`Searching for: ${searchText}`);
+  });
+}
