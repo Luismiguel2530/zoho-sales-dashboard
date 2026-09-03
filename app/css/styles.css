@@ -15,6 +15,11 @@ h1 {
   color: #1f2937;
 }
 
+h2 {
+  color: #1f2937;
+  margin-bottom: 18px;
+}
+
 p {
   color: #6b7280;
   margin-bottom: 20px;
@@ -96,7 +101,18 @@ button:hover {
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
 }
 
-h2 {
-  color: #1f2937;
+#loadLeadsBtn {
   margin-bottom: 18px;
+}
+
+#lead-list {
+  margin-top: 15px;
+}
+
+.lead-card {
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
