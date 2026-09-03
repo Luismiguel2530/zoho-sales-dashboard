@@ -48,3 +48,47 @@ if (searchBtn) {
     alert(`Searching for: ${searchText}`);
   });
 }
+
+const loadLeadsBtn = document.getElementById("loadLeadsBtn");
+
+if (loadLeadsBtn) {
+  loadLeadsBtn.addEventListener("click", loadLeads);
+}
+
+function loadLeads() {
+  const leadList = document.getElementById("lead-list");
+
+  leadList.innerHTML = "Loading leads...";
+
+  ZOHO.CRM.API.getAllRecords({
+    Entity: "Leads",
+  })
+    .then(function (response) {
+      leadList.innerHTML = "";
+
+      if (!response.data || response.data.length === 0) {
+        leadList.innerHTML = "<p>No leads found.</p>";
+
+        return;
+      }
+
+      response.data.slice(0, 10).forEach((lead) => {
+        const card = document.createElement("div");
+
+        card.className = "lead-card";
+
+        const leadName = lead.Full_Name || lead.Last_Name || "Unnamed Lead";
+
+        card.innerHTML = `
+          <strong>${leadName}</strong>
+        `;
+
+        leadList.appendChild(card);
+      });
+    })
+    .catch(function (error) {
+      console.error(error);
+
+      leadList.innerHTML = "<p>Error loading leads.</p>";
+    });
+}
