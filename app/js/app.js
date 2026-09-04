@@ -119,3 +119,37 @@ if (newAccountBtn) {
     });
   });
 }
+loadKpis();
+
+function loadKpis() {
+  loadLeadCount();
+  loadAccountCount();
+  loadDealCount();
+}
+
+// Load lead count
+function loadLeadCount() {
+  ZOHO.CRM.API.getAllRecords({
+    Entity: "Leads",
+  }).then((response) => {
+    document.getElementById("leadCount").textContent = response.data.length;
+  });
+}
+
+// Load account count
+function loadAccountCount() {
+  ZOHO.CRM.API.getAllRecords({
+    Entity: "Accounts",
+  }).then((response) => {
+    document.getElementById("accountCount").textContent = response.data.length;
+  });
+}
+
+// Load deal count
+function loadDealCount() {
+  ZOHO.CRM.API.getAllRecords({
+    Entity: "Deals",
+  }).then((response) => {
+    document.getElementById("dealCount").textContent = response.data.length;
+  });
+}
