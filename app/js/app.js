@@ -92,3 +92,30 @@ function loadLeads() {
       leadList.innerHTML = "<p>Error loading leads.</p>";
     });
 }
+const newLeadBtn = document.getElementById("newLeadBtn");
+
+if (newLeadBtn) {
+  newLeadBtn.addEventListener("click", () => {
+    ZOHO.CRM.UI.Record.create({
+      Entity: "Leads",
+    });
+  });
+}
+const newDealBtn = document.getElementById("newDealBtn");
+
+if (newDealBtn) {
+  newDealBtn.addEventListener("click", () => {
+    ZOHO.CRM.UI.Record.create({
+      Entity: "Deals",
+    });
+  });
+}
+const newAccountBtn = document.getElementById("newAccountBtn");
+
+if (newAccountBtn) {
+  newAccountBtn.addEventListener("click", () => {
+    ZOHO.CRM.UI.Record.create({
+      Entity: "Accounts",
+    });
+  });
+}
