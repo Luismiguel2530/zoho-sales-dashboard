@@ -79,9 +79,21 @@ function loadLeads() {
 
         const leadName = lead.Full_Name || lead.Last_Name || "Unnamed Lead";
 
+        const company = lead.Company || "No company";
+
+        const email = lead.Email || "No email";
+
+        const phone = lead.Phone || "No phone";
+
         card.innerHTML = `
-          <strong>${leadName}</strong>
-        `;
+  <strong>${leadName}</strong>
+  <br>
+  <small>Company: ${company}</small>
+  <br>
+  <small>Email: ${email}</small>
+  <br>
+  <small>Phone: ${phone}</small>
+`;
 
         leadList.appendChild(card);
       });
