@@ -4,15 +4,15 @@ Custom dashboard widget built for Zoho CRM.
 
 ## Dashboard Home
 
-/screenshots/dashboard-home.png
+![Dashboard Home](screenshots/dashboard-home.png)
 
 ## Lead Retrieval
 
-/screenshots/Recent-Leads.png
+![Lead Retrieval](screenshots/Recent-Leads.png)
 
 ## Widget installed
 
-/screenshots/Widget-homePageDashboard-installed.png
+![Widget installed](screenshots/Widget-homePageDashboard-installed.png)
 
 ## Features
 
