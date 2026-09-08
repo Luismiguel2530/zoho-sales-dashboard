@@ -24,19 +24,23 @@ if (loadDealsButton) {
 ================================================== */
 
 function loadRecentDeals() {
-  if (!dealResultsContainer) {
-    console.error("The Deal list container was not found.");
-
+  if (!dealResultsContainer || !loadDealsButton) {
+    console.error("The Deals section could not be initialized.");
     return;
   }
 
   if (!window.ZOHO || !ZOHO.CRM || !ZOHO.CRM.API) {
-    showDealMessage("The Zoho CRM API is not available.");
-
+    setRecordStatus(
+      dealResultsContainer,
+      "The Zoho CRM API is not available.",
+      "error",
+    );
     return;
   }
 
-  dealResultsContainer.textContent = "Loading deals...";
+  setButtonLoading(loadDealsButton, true, "Loading Deals...");
+
+  setRecordStatus(dealResultsContainer, "Loading deals...", "loading");
 
   ZOHO.CRM.API.getAllRecords({
     Entity: "Deals",
@@ -52,7 +56,7 @@ function loadRecentDeals() {
       dealResultsContainer.replaceChildren();
 
       if (deals.length === 0) {
-        showDealMessage("No deals found.");
+        setRecordStatus(dealResultsContainer, "No deals found.", "empty");
         return;
       }
 
@@ -61,13 +65,25 @@ function loadRecentDeals() {
 
         dealResultsContainer.appendChild(dealCard);
       });
+
+      const loadedCount = Math.min(deals.length, 10);
+
+      announceRecordResult(
+        dealResultsContainer,
+        `${loadedCount} deal${loadedCount === 1 ? "" : "s"} loaded.`,
+      );
     })
     .catch(function (error) {
       console.error("Error loading deals:", error);
 
-      dealResultsContainer.replaceChildren();
-
-      showDealMessage("Error loading deals.");
+      setRecordStatus(
+        dealResultsContainer,
+        "Unable to load deals. Please try again.",
+        "error",
+      );
+    })
+    .finally(function () {
+      setButtonLoading(loadDealsButton, false, "Load Deals");
     });
 }
 
