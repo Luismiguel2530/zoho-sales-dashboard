@@ -14,6 +14,14 @@ Custom dashboard widget built for Zoho CRM.
 
 ![Widget installed](screenshots/Widget-homePageDashboard-installed.png)
 
+## Widget Improved
+
+![Widget Improved](screenshots/widget-improvedDesign.png)
+
+## Deluge validation
+
+![Deluge validation](screenshots/Deluge_validation_script.png)
+
 ## Features
 
 - Home Page Dashboard
