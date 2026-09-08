@@ -72,19 +72,31 @@ if (loadLeadsBtn) {
 function loadLeads() {
   const leadList = document.getElementById("lead-list");
 
-  leadList.textContent = "Loading leads...";
+  if (!leadList || !loadLeadsBtn) {
+    console.error("The Leads section could not be initialized.");
+    return;
+  }
+
+  if (!window.ZOHO || !ZOHO.CRM || !ZOHO.CRM.API) {
+    setRecordStatus(leadList, "The Zoho CRM API is not available.", "error");
+    return;
+  }
+
+  setButtonLoading(loadLeadsBtn, true, "Loading Leads...");
+
+  setRecordStatus(leadList, "Loading leads...", "loading");
 
   ZOHO.CRM.API.getAllRecords({
     Entity: "Leads",
   })
     .then((response) => {
-      leadList.replaceChildren();
-
       const leads =
         response && Array.isArray(response.data) ? response.data : [];
 
+      leadList.replaceChildren();
+
       if (leads.length === 0) {
-        showMessage(leadList, "No leads found.");
+        setRecordStatus(leadList, "No leads found.", "empty");
         return;
       }
 
@@ -92,7 +104,9 @@ function loadLeads() {
         const leadName = lead.Full_Name || lead.Last_Name || "Unnamed Lead";
 
         const company = lead.Company || "No company";
+
         const email = lead.Email || "No email";
+
         const phone = lead.Phone || "No phone";
 
         const card = createRecordCard(leadName, [
@@ -103,12 +117,25 @@ function loadLeads() {
 
         leadList.appendChild(card);
       });
+
+      announceRecordResult(
+        leadList,
+        `${Math.min(leads.length, 10)} lead${
+          Math.min(leads.length, 10) === 1 ? "" : "s"
+        } loaded.`,
+      );
     })
     .catch((error) => {
       console.error("Error loading leads:", error);
 
-      leadList.replaceChildren();
-      showMessage(leadList, "Error loading leads.");
+      setRecordStatus(
+        leadList,
+        "Unable to load leads. Please try again.",
+        "error",
+      );
+    })
+    .finally(() => {
+      setButtonLoading(loadLeadsBtn, false, "Load Leads");
     });
 }
 
@@ -128,20 +155,31 @@ if (loadAccountsBtn) {
 function loadAccounts() {
   const accountList = document.getElementById("account-list");
 
-  accountList.textContent = "Loading accounts...";
+  if (!accountList || !loadAccountsBtn) {
+    console.error("The Accounts section could not be initialized.");
+    return;
+  }
+
+  if (!window.ZOHO || !ZOHO.CRM || !ZOHO.CRM.API) {
+    setRecordStatus(accountList, "The Zoho CRM API is not available.", "error");
+    return;
+  }
+
+  setButtonLoading(loadAccountsBtn, true, "Loading Accounts...");
+
+  setRecordStatus(accountList, "Loading accounts...", "loading");
 
   ZOHO.CRM.API.getAllRecords({
     Entity: "Accounts",
   })
     .then((response) => {
-      accountList.replaceChildren();
-
       const accounts =
         response && Array.isArray(response.data) ? response.data : [];
 
-      if (accounts.length === 0) {
-        showMessage(accountList, "No accounts found.");
+      accountList.replaceChildren();
 
+      if (accounts.length === 0) {
+        setRecordStatus(accountList, "No accounts found.", "empty");
         return;
       }
 
@@ -159,13 +197,25 @@ function loadAccounts() {
 
         accountList.appendChild(card);
       });
+
+      const loadedCount = Math.min(accounts.length, 10);
+
+      announceRecordResult(
+        accountList,
+        `${loadedCount} account${loadedCount === 1 ? "" : "s"} loaded.`,
+      );
     })
     .catch((error) => {
       console.error("Error loading accounts:", error);
 
-      accountList.replaceChildren();
-
-      showMessage(accountList, "Error loading accounts.");
+      setRecordStatus(
+        accountList,
+        "Unable to load accounts. Please try again.",
+        "error",
+      );
+    })
+    .finally(() => {
+      setButtonLoading(loadAccountsBtn, false, "Load Accounts");
     });
 }
 
@@ -319,4 +369,51 @@ function showMessage(container, message) {
 
   paragraph.textContent = message;
   container.appendChild(paragraph);
+}
+/* ==================================================
+   LOADING AND STATUS HELPERS
+================================================== */
+
+function setButtonLoading(button, isLoading, label) {
+  if (!button) {
+    return;
+  }
+
+  button.disabled = isLoading;
+  button.setAttribute("aria-busy", String(isLoading));
+  button.textContent = label;
+}
+
+function setRecordStatus(container, message, state) {
+  if (!container) {
+    return;
+  }
+
+  container.replaceChildren();
+
+  const statusMessage = document.createElement("p");
+
+  statusMessage.className = `record-status record-status--${state}`;
+
+  statusMessage.textContent = message;
+
+  if (state === "error") {
+    statusMessage.setAttribute("role", "alert");
+  }
+
+  container.appendChild(statusMessage);
+}
+
+function announceRecordResult(container, message) {
+  if (!container) {
+    return;
+  }
+
+  const announcement = document.createElement("p");
+
+  announcement.className = "visually-hidden";
+
+  announcement.textContent = message;
+
+  container.prepend(announcement);
 }
